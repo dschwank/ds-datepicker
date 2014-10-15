@@ -1,0 +1,45 @@
+.dsDatepicker .interactionArea {
+    text-align: center;
+}
+
+.dsDatepicker th {
+    font-weight: bold;
+}
+
+.dsDatepicker .l-datepicker {
+    padding: 4px;
+    border: 1px solid black;
+    border-radius: 5px;
+    position: absolute;
+    background-color: #ffffff;
+}
+
+.dsDatepicker .day {
+    text-align: center;
+    width: 30px;
+    height: 20px;
+}
+
+.dsDatepicker .day.today {
+    transition: background-color .2s ease-out;
+    background-color: lightgoldenrodyellow;
+    border-radius: 10px;
+}
+
+.dsDatepicker .day.otherMonth {
+    color: lightgray;
+}
+
+.dsDatepicker .btn {
+    cursor: pointer;
+}
+
+.dsDatepicker .dateInputField{
+    width: 100px;
+    height: 20px;
+    border-radius: 6px;
+}
+
+.dsDatepicker .hidden {
+    visibility: hidden;
+}

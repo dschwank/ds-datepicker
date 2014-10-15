@@ -1,0 +1,31 @@
+{
+    "name": "ds-datepicker",
+    "version": "0.0.1",
+    "homepage": "https://github.com/dschwank",
+    "authors": [
+        "Dominik Schwank <Github@Schwank.cc>"
+    ],
+    "description": "Angular datepicker module without any external dependencies.",
+    "keywords": [
+        "angularjs",
+        "angular",
+        "datepicker",
+        "ng",
+        "ds"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "angular": "~1.2",
+        "angular-dateparser": "~1.0.9"
+    },
+    "devDependencies": {
+        "angular-mocks": "~1.2"
+    }
+}

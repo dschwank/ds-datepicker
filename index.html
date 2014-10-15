@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="ds.datepicker">
+<head>
+    <title>dsDatepicker example</title>
+    <link rel="stylesheet" href="src/styles/dsDatepicker.css"/>
+</head>
+<body ng-controller="TestCtrl">
+
+<h1>dsDatepicker example</h1>
+
+<!-- Example Usage -->
+<div ds-datepicker="" ng-model="date" config="dateConfig"></div>
+<div ng-bind="date"></div>
+
+<!-- Vendor -->
+<script src="bower_components/angular/angular.js"></script>
+
+<!-- Externals -->
+<script src="bower_components/angular-dateparser/dist/angular-dateparser.js"></script>
+
+<!-- own -->
+<script src="src/scripts/module.js"></script>
+
+<script src="src/scripts/directives/dsDatepicker.js"></script>
+<script src="src/scripts/directives/dsDateFormat.js"></script>
+<script src="src/scripts/services/DatepickerService.js"></script>
+
+<script type="text/javascript">
+    angular.module('ds.datepicker')
+            .controller('TestCtrl', function($scope) {
+                $scope.date = new Date();
+
+                $scope.dateConfig = {
+                    dateFormat: 'dd.MM.yyyy'
+                };
+            });
+</script>
+
+</body>
+</html>
