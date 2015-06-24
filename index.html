@@ -9,7 +9,12 @@
 <h1>dsDatepicker example</h1>
 
 <!-- Example Usage -->
-<div ds-datepicker="" ng-model="date" config="dateConfig"></div>
+<div>
+    <span>Choose the current date:</span>
+    <span ds-datepicker="" ng-model="date" config="dateConfig"></span>
+</div>
+<div ds-datepicker="" ng-model="date" config="secondDateConfig"
+     style="width: 500px"></div>
 <div ng-bind="date"></div>
 
 <!-- Vendor -->
@@ -19,19 +24,25 @@
 <script src="bower_components/angular-dateparser/dist/angular-dateparser.js"></script>
 
 <!-- own -->
-<script src="src/scripts/module.js"></script>
+<script src="src/scripts/app.js"></script>
 
+<script src="src/scripts/controllers/dsDatepickerCtrl.js"></script>
+<script src="src/scripts/services/dsDatepickerService.js"></script>
 <script src="src/scripts/directives/dsDatepicker.js"></script>
 <script src="src/scripts/directives/dsDateFormat.js"></script>
-<script src="src/scripts/services/DatepickerService.js"></script>
+
 
 <script type="text/javascript">
     angular.module('ds.datepicker')
-            .controller('TestCtrl', function($scope) {
+            .controller('TestCtrl', function($scope, $log) {
                 $scope.date = new Date();
 
                 $scope.dateConfig = {
                     dateFormat: 'dd.MM.yyyy'
+                };
+
+                $scope.secondDateConfig = {
+                    dateFormat: "EEE 'the' dd of MMM yyyy"
                 };
             });
 </script>
