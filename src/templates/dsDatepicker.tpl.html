@@ -9,8 +9,7 @@
     <div ng-if="pickerState" class="l-datepicker boxBorder" ng-click="$event.stopPropagation()">
         <div class="interactionArea">
             <div ng-click="subMonth()" class="month-decrease arrow arrow-left"></div>
-            <span id="curDate"
-                  class="btn">{{date | date:config.dateFormat }}</span>
+            <span id="curDate">{{date | date:config.dateFormat}}</span>
             <div ng-click="addMonth()" class="month-increase arrow arrow-right"></div>
         </div>
         <div class="datepicker-table">
