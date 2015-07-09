@@ -2,6 +2,10 @@
  * ### GENERAL STYLES ###
  * ###################### */
 
+.dsDatepicker > *{
+    box-sizing: content-box;
+}
+
 .dsDatepicker {
     width: inherit;
     display: inline-block;
@@ -171,6 +175,7 @@
     border: 3px solid black;
     border-left: 1px solid transparent;
     border-bottom: 1px solid transparent;
+    margin: 0 4px 0 4px;
 }
 
 .dsDatepicker .arrow.arrow-right {
