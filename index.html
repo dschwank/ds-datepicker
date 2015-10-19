@@ -8,10 +8,12 @@
 
 <h1>dsDatepicker example</h1>
 
+<button ng-click="disabled = !disabled">Switch disable</button>
+
 <!-- Example Usage -->
 <div>
     <span>Choose the current date:</span>
-    <span ds-datepicker="" ng-model="date" config="dateConfig"></span>
+    <span ds-datepicker="" ng-model="date" config="dateConfig" ng-disabled="disabled"></span>
 </div>
 <div ds-datepicker="" ng-model="date" config="secondDateConfig"
      style="width: 500px"></div>
@@ -38,7 +40,8 @@
                 $scope.date = new Date();
 
                 $scope.dateConfig = {
-                    dateFormat: 'dd.MM.yyyy'
+                    dateFormat: 'dd.MM.yyyy',
+                    pickerFormat: 'MMMM yy'
                 };
 
                 $scope.secondDateConfig = {

@@ -2,7 +2,7 @@
  * ### GENERAL STYLES ###
  * ###################### */
 
-.dsDatepicker > *{
+.dsDatepicker > * {
     box-sizing: content-box;
 }
 
@@ -59,6 +59,9 @@
     height: 100%;
     width: 100%;
     border: 0;
+}
+
+.dsDatepicker > .l-input > .datepicker-opener-group > .datepicker-opener-btn:not([disabled]) {
     background-color: transparent;
 }
 
@@ -80,11 +83,32 @@
     border-radius: 5px;
     position: absolute;
     background-color: #F4F4F4;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .dsDatepicker > .l-datepicker > .interactionArea {
     text-align: center;
     margin-bottom: 5px;
+}
+
+.dsDatepicker > .l-datepicker > .interactionArea > .pickerDate {
+    width: calc(100% - 40px);
+    display: inline-block;
+    -webkit-touch-callout: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+.dsDatepicker > .l-datepicker > .interactionArea > .month-decrease,
+.dsDatepicker > .l-datepicker > .interactionArea > .month-increase {
+    width: 20px;
+    display: inline-block;
 }
 
 /* ########################

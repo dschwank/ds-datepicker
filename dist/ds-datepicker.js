@@ -141,7 +141,9 @@ angular.module('ds.datepicker', ['dateParser']);
    *
    *     | Property | Type           | Description |
    *     | -------- | -------------- | ----------- |
-   *     | format   | {@type string} | Format string for the way we should display the date string |
+   *     | dateFormat   | {@type string} | Format string for the way we should display the date string |
+   *     | pickerFormat  | {@type string} | Format string for the way we should display the date string in the picker header. If this property is not set, it will use the `dateFormat` property. For example, use `'MMMM yy'` to display the name of the month and a two digits year value. |
+   * @param {boolean=} disabled Identifier if the datepicker should be disabled (`true`) or not (`false`).
    *
    * @description
    * This directive can be used for a simple datepicker.
@@ -161,6 +163,13 @@ angular.module('ds.datepicker', ['dateParser']);
           config: '=?'
         },
         link: function (scope, element, attrs, ngModel) {
+          /**
+             * @ngdoc property
+             * @name disbaled
+             * @propertyOf ds.datepicker.directives:dsDatepicker
+             * @return {boolean} Identifier if the datepicker should be disabled.
+             */
+          scope.disabled = false;
           /**
              * @ngdoc property
              * @name dates
@@ -255,6 +264,10 @@ angular.module('ds.datepicker', ['dateParser']);
                 scope.subDate();
               }
               scope.$apply();
+            });
+            // add observer for the disabled attribute
+            attrs.$observe('disabled', function (value) {
+              scope.disabled = value;
             });
           }());
         },

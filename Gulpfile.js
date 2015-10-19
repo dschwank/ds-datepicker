@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
     clean = require('gulp-clean'),
+    connect = require('gulp-connect'),
     gulpDocs = require('gulp-ngdocs'),
     uglify = require('gulp-uglify'),
     minifyCss = require('gulp-minify-css'),
@@ -13,6 +14,7 @@ var gulp = require('gulp'),
 var component = require('./bower.json');
 
 var CONFIG = {
+  SERVER_PORT: 8083,
   DIST_PATH: 'dist/',
   DOCS_PATH: 'build/',
   SRC_PATH: 'src/',
@@ -103,6 +105,22 @@ gulp.task('build-templates', ['clean'], function() {
       .pipe(uglify())
       .pipe(concat(component.name + '.templates.min.js'))
       .pipe(gulp.dest(CONFIG.DIST_PATH));
+});
+
+/* ##################
+ * ### WEB-SERVER ###
+ * ##################
+ */
+gulp.task('start', function(cb) {
+  connect.server({
+    port: CONFIG.SERVER_PORT || 8080,
+    livereload: false
+  });
+});
+
+gulp.task('server-reload', function(cb) {
+  gulp.src('./**/*')
+      .pipe(connect.reload());
 });
 
 /* ###############
