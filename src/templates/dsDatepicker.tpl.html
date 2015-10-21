@@ -2,10 +2,10 @@
     <div class="l-input">
         <input class="datepicker-inputField boxBorder" type="text" ds-date-format
                format="{{config.dateFormat}}" ng-model="date" ng-change="setDate(date)"
-               ng-disabled="disabled"/>
-        <span class="datepicker-opener-group boxBorder"><button
+               ng-disabled="disabled"/><!--
+        --><div class="datepicker-opener-group boxBorder"><button
                 class="datepicker-opener-btn datepicker-icon"
-                ng-click="flipPickerState($event)" ng-disabled="disabled"></button></span>
+                ng-click="flipPickerState($event)" ng-disabled="disabled"></button></div>
     </div>
     <div ng-if="pickerState" class="l-datepicker boxBorder" ng-click="$event.stopPropagation()">
         <div class="interactionArea">

@@ -9,83 +9,139 @@ angular.module('ds.datepicker', ['dateParser']);
 (function () {
   'use strict';
   /**
-   * @ngdoc controller
-   * @name ds.datepicker.controllers:dsDatepickerCtrl
+   * @ngdoc service
+   * @name ds.datepicker.dsDatepickerService
    * @description
-   * Controller for the {@link ds.datepicker.directives:dsDatepicker
-   *     `dsDatepicker`}.
+   * This service provides several helper methods for the {@link
+      *     ds.datepicker.directives:dsDatepicker `dsDatepicker`}.
+   *     ```
+   *      var tTest;
+   *      tTest = 42;
+   *      tTest = 'Yeah';
+   *     ```
+   *
+   *     ```js
+   *      var tTest;
+   *      tTest = 42;
+   *      tTest = 'Yeah';
+   *     ```
+   *
+   *     ```+js
+   *      var tTest;
+   *      tTest = 42;
+   *      tTest = 'Yeah';
+   *     ```
+   *
+   *     ```-js
+   *      var tTest;
+   *      tTest = 42;
+   *      tTest = 'Yeah';
+   *     ```
    */
-  angular.module('ds.datepicker').controller('dsDatepickerCtrl', [
-    '$scope',
-    '$document',
-    '$log',
-    function ($scope, $document, $log) {
-      var mCloseListener;
-      /**
-         * @ngdoc property
-         * @name pickerState
-         * @propertyOf ds.datepicker.controllers:dsDatepickerCtrl
-         * @return {boolean} Current state of the datepicker - either it is
-         *     open (`true`) or not (`false`).
-         */
-      $scope.pickerState = false;
-      /**
+  angular.module('ds.datepicker').factory('dsDatepickerService', function () {
+    var mPublicApi;
+    mPublicApi = {
+      increaseDate: increaseDate,
+      decreaseDate: decreaseDate,
+      increaseMonth: increaseMonth,
+      decreaseMonth: decreaseMonth,
+      generateDateArray: generateDateArray
+    };
+    return mPublicApi;
+    /* ##################
+         * ### PUBLIC API ###
+         * ################## */
+    /**
          * @ngdoc method
-         * @name flipPickerState
-         * @methodOf ds.datepicker.controllers:dsDatepickerCtrl
-         * @param {Event} event Click event to flip the picker state.
+         * @name increaseDate
+         * @methodOf ds.datepicker.dsDatepickerService
+         * @param {Date} date Date which should be increased by a special day
+         *     count.
+         * @param {number=} opt_by Count of day which should be added to the
+         *     given date.
+         * @return {Date} Returns the date, increased by the given value.
          * @description
-         * Flip the state of the datepicker - if the {@link
-         *     ds.datepicker.controllers:dsDatepickerCtrl#properties_pickerState
-         *     `pickerState`} is true, the picker will be closed - otherwise
-         *     opened.
+         * Increase the given date by a specific value. If the `by`-value is
+         *     not set, the date will be increased by one.
+         *
          */
-      $scope.flipPickerState = function flipPickerState(event) {
-        if ($scope.pickerState) {
-          $scope.disablePicker(event);
-        } else {
-          $scope.enablePicker(event);
-        }
-      };
-      /**
-         * @ngdoc method
-         * @name enablePicker
-         * @methodOf ds.datepicker.controllers:dsDatepickerCtrl
-         * @param {Event} event Click event for the enabling.
-         * @description
-         * Enable / Open the datepicker.
-         */
-      $scope.enablePicker = function enablePicker(event) {
-        $scope.pickerState = true;
-        if (!mCloseListener) {
-          var tInitialized = false;
-          mCloseListener = function () {
-            if (tInitialized) {
-              $scope.disablePicker();
-              $scope.$digest();
-            } else {
-              tInitialized = true;
-            }
-          };
-          $document.on('click', mCloseListener);
-        }
-      };
-      /**
-         * @ngdoc method
-         * @name disablePicker
-         * @methodOf ds.datepicker.controllers:dsDatepickerCtrl
-         * @description
-         * Disable / Close the datepicker.
-         */
-      $scope.disablePicker = function disablePicker() {
-        $scope.pickerState = false;
-        if (mCloseListener) {
-          $document.off('click', mCloseListener);
-          mCloseListener = undefined;
-        }
-      };
+    function increaseDate(date, opt_by) {
+      return date.setDate(date.getDate() + (opt_by || 1));
     }
-  ]);
+    /**
+         * @ngdoc method
+         * @name decreaseDate
+         * @methodOf ds.datepicker.dsDatepickerService
+         * @param {Date} date Date which should be decreased by a special day
+         *     count.
+         * @param {number=} opt_by Count of day which should be subtracted from
+         *     the given date.
+         * @return {Date} Returns the date, decreased by the given value.
+         * @description
+         * Decrease the given date by a specific value. If the `by`-value is
+         *     not set, the date will be decreased by one.
+         */
+    function decreaseDate(date, opt_by) {
+      return date.setDate(date.getDate() - (opt_by || 1));
+    }
+    /**
+         * @ngdoc method
+         * @name decreaseMonth
+         * @methodOf ds.datepicker.dsDatepickerService
+         * @param {Date} date Date which should be decreased by a special month
+         *     count.
+         * @param {number=} opt_by Count of month which should be subtracted
+         *     from the given date.
+         * @return {Date} Returns the date, decreased by the given value.
+         * @description
+         * Decrease the given date by a specific value. If the `by`-value is
+         *     not set, the date will be decreased by one.
+         */
+    function decreaseMonth(date, opt_by) {
+      return date.setMonth(date.getMonth() - (opt_by || 1));
+    }
+    /**
+         * @ngdoc method
+         * @name increaseMonth
+         * @methodOf ds.datepicker.dsDatepickerService
+         * @param {Date} date Date which should be increased by a special month
+         *     count.
+         * @param {number=} opt_by Count of month which should be added to the
+         *     given date.
+         * @return {Date} Returns the date, increased by the given value.
+         * @description
+         * Increase the given date by a specific value. If the `by`-value is
+         *     not set, the date will be increased by one.
+         *
+         */
+    function increaseMonth(date, opt_by) {
+      return date.setMonth(date.getMonth() + (opt_by || 1));
+    }
+    /**
+         * @ngdoc method
+         * @name generateDateArray
+         * @methodOf ds.datepicker.dsDatepickerService
+         * @param {Date} date Current date - the array will be generated for
+         *     the month of this date.
+         * @return {Array} Returns an array containing dates for 42 dates -
+         *     this is equal to 6 weeks. 6 weeks are necessary to display all
+         *     possible day combinations.
+         * @description
+         * Generate an array for the month of the given date. The resulting
+         *     array will contain 42 days, such that we can display all
+         *     possible day combinations for one month.
+         */
+    function generateDateArray(date) {
+      var tDateArray = [], tDayOfWeek;
+      date.setDate(1);
+      tDayOfWeek = date.getDay();
+      date.setDate(tDayOfWeek * -1 + (tDayOfWeek === 0 ? -6 : 1));
+      for (var i = 0; i < 42; i++) {
+        tDateArray.push(new Date(date.setDate(date.getDate() + 1)));
+      }
+      return tDateArray;
+    }
+  });
 }());
 (function () {
   'use strict';
@@ -279,137 +335,81 @@ angular.module('ds.datepicker', ['dateParser']);
 (function () {
   'use strict';
   /**
-   * @ngdoc service
-   * @name ds.datepicker.dsDatepickerService
+   * @ngdoc controller
+   * @name ds.datepicker.controllers:dsDatepickerCtrl
    * @description
-   * This service provides several helper methods for the {@link
-      *     ds.datepicker.directives:dsDatepicker `dsDatepicker`}.
-   *     ```
-   *      var tTest;
-   *      tTest = 42;
-   *      tTest = 'Yeah';
-   *     ```
-   *
-   *     ```js
-   *      var tTest;
-   *      tTest = 42;
-   *      tTest = 'Yeah';
-   *     ```
-   *
-   *     ```+js
-   *      var tTest;
-   *      tTest = 42;
-   *      tTest = 'Yeah';
-   *     ```
-   *
-   *     ```-js
-   *      var tTest;
-   *      tTest = 42;
-   *      tTest = 'Yeah';
-   *     ```
+   * Controller for the {@link ds.datepicker.directives:dsDatepicker
+   *     `dsDatepicker`}.
    */
-  angular.module('ds.datepicker').factory('dsDatepickerService', function () {
-    var mPublicApi;
-    mPublicApi = {
-      increaseDate: increaseDate,
-      decreaseDate: decreaseDate,
-      increaseMonth: increaseMonth,
-      decreaseMonth: decreaseMonth,
-      generateDateArray: generateDateArray
-    };
-    return mPublicApi;
-    /* ##################
-         * ### PUBLIC API ###
-         * ################## */
-    /**
-         * @ngdoc method
-         * @name increaseDate
-         * @methodOf ds.datepicker.dsDatepickerService
-         * @param {Date} date Date which should be increased by a special day
-         *     count.
-         * @param {number=} opt_by Count of day which should be added to the
-         *     given date.
-         * @return {Date} Returns the date, increased by the given value.
-         * @description
-         * Increase the given date by a specific value. If the `by`-value is
-         *     not set, the date will be increased by one.
-         *
+  angular.module('ds.datepicker').controller('dsDatepickerCtrl', [
+    '$scope',
+    '$document',
+    '$log',
+    function ($scope, $document, $log) {
+      var mCloseListener;
+      /**
+         * @ngdoc property
+         * @name pickerState
+         * @propertyOf ds.datepicker.controllers:dsDatepickerCtrl
+         * @return {boolean} Current state of the datepicker - either it is
+         *     open (`true`) or not (`false`).
          */
-    function increaseDate(date, opt_by) {
-      return date.setDate(date.getDate() + (opt_by || 1));
-    }
-    /**
+      $scope.pickerState = false;
+      /**
          * @ngdoc method
-         * @name decreaseDate
-         * @methodOf ds.datepicker.dsDatepickerService
-         * @param {Date} date Date which should be decreased by a special day
-         *     count.
-         * @param {number=} opt_by Count of day which should be subtracted from
-         *     the given date.
-         * @return {Date} Returns the date, decreased by the given value.
+         * @name flipPickerState
+         * @methodOf ds.datepicker.controllers:dsDatepickerCtrl
+         * @param {Event} event Click event to flip the picker state.
          * @description
-         * Decrease the given date by a specific value. If the `by`-value is
-         *     not set, the date will be decreased by one.
+         * Flip the state of the datepicker - if the {@link
+         *     ds.datepicker.controllers:dsDatepickerCtrl#properties_pickerState
+         *     `pickerState`} is true, the picker will be closed - otherwise
+         *     opened.
          */
-    function decreaseDate(date, opt_by) {
-      return date.setDate(date.getDate() - (opt_by || 1));
-    }
-    /**
+      $scope.flipPickerState = function flipPickerState(event) {
+        if ($scope.pickerState) {
+          $scope.disablePicker(event);
+        } else {
+          $scope.enablePicker(event);
+        }
+      };
+      /**
          * @ngdoc method
-         * @name decreaseMonth
-         * @methodOf ds.datepicker.dsDatepickerService
-         * @param {Date} date Date which should be decreased by a special month
-         *     count.
-         * @param {number=} opt_by Count of month which should be subtracted
-         *     from the given date.
-         * @return {Date} Returns the date, decreased by the given value.
+         * @name enablePicker
+         * @methodOf ds.datepicker.controllers:dsDatepickerCtrl
+         * @param {Event} event Click event for the enabling.
          * @description
-         * Decrease the given date by a specific value. If the `by`-value is
-         *     not set, the date will be decreased by one.
+         * Enable / Open the datepicker.
          */
-    function decreaseMonth(date, opt_by) {
-      return date.setMonth(date.getMonth() - (opt_by || 1));
-    }
-    /**
+      $scope.enablePicker = function enablePicker(event) {
+        $scope.pickerState = true;
+        if (!mCloseListener) {
+          var tInitialized = false;
+          mCloseListener = function () {
+            if (tInitialized) {
+              $scope.disablePicker();
+              $scope.$digest();
+            } else {
+              tInitialized = true;
+            }
+          };
+          $document.on('click', mCloseListener);
+        }
+      };
+      /**
          * @ngdoc method
-         * @name increaseMonth
-         * @methodOf ds.datepicker.dsDatepickerService
-         * @param {Date} date Date which should be increased by a special month
-         *     count.
-         * @param {number=} opt_by Count of month which should be added to the
-         *     given date.
-         * @return {Date} Returns the date, increased by the given value.
+         * @name disablePicker
+         * @methodOf ds.datepicker.controllers:dsDatepickerCtrl
          * @description
-         * Increase the given date by a specific value. If the `by`-value is
-         *     not set, the date will be increased by one.
-         *
+         * Disable / Close the datepicker.
          */
-    function increaseMonth(date, opt_by) {
-      return date.setMonth(date.getMonth() + (opt_by || 1));
+      $scope.disablePicker = function disablePicker() {
+        $scope.pickerState = false;
+        if (mCloseListener) {
+          $document.off('click', mCloseListener);
+          mCloseListener = undefined;
+        }
+      };
     }
-    /**
-         * @ngdoc method
-         * @name generateDateArray
-         * @methodOf ds.datepicker.dsDatepickerService
-         * @param {Date} date Current date - the array will be generated for
-         *     the month of this date.
-         * @return {Array} Returns an array containing dates for 42 dates -
-         *     this is equal to 6 weeks. 6 weeks are necessary to display all
-         *     possible day combinations.
-         * @description
-         * Generate an array for the month of the given date. The resulting
-         *     array will contain 42 days, such that we can display all
-         *     possible day combinations for one month.
-         */
-    function generateDateArray(date) {
-      var tDateArray = [], tDayOfWeek;
-      date.setDate(1);
-      tDayOfWeek = date.getDay();
-      date.setDate(tDayOfWeek * -1 + (tDayOfWeek === 0 ? -6 : 1));
-      for (var i = 0; i < 42; i++) {
-        tDateArray.push(new Date(date.setDate(date.getDate() + 1)));
-      }
-      return tDateArray;
-    }
-  });
+  ]);
 }());
