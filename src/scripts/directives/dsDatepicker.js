@@ -69,6 +69,22 @@
              * Set the date model value.
              */
             scope.setDate = function setDate(date) {
+
+              // override the hours, minutes, seconds & milliseconds, if we have a input date
+              if(date && scope.date && scope.date instanceof Date) {
+                var tHours,
+                    tMinutes,
+                    tSeconds,
+                    tMilliseconds;
+
+                tHours = scope.date.getHours();
+                tMinutes = scope.date.getMinutes();
+                tSeconds = scope.date.getSeconds();
+                tMilliseconds = scope.date.getMilliseconds();
+
+                date.setHours(tHours, tMinutes, tSeconds, tMilliseconds);
+              }
+
               ngModel.$setViewValue(date);
             };
 
