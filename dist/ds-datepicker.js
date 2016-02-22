@@ -258,6 +258,25 @@
 
 }());
 
+(function (){
+  'use strict';
+
+  angular.module('ds.datepicker')
+      .filter('dsMomentFilter', ["$locale", function($locale){
+
+        return function(date, format) {
+          var tMoment;
+
+          tMoment = moment(date);
+
+          tMoment.locale($locale.id);
+
+          return tMoment.format(format);
+        };
+
+      }]);
+}());
+
 (function () {
   'use strict';
 
@@ -361,13 +380,6 @@
           },
           link: function (scope, element, attrs, ngModel) {
 
-            moment.locale($locale.id);
-
-            scope.$on('$localeChangeSuccess', function () {
-              moment.locale($locale.id);
-            });
-
-
             scope.setViewValue = function setViewValue(value) {
               ngModel.$setViewValue(moment(value));
             };
@@ -421,19 +433,6 @@
           templateUrl: 'src/templates/dsDatepicker.tpl.html'
         };
       }]);
-}());
-
-(function (){
-  'use strict';
-
-  angular.module('ds.datepicker')
-      .filter('dsMomentFilter', function(){
-
-        return function(date, format) {
-          return moment(date).format(format);
-        };
-
-      });
 }());
 
 (function () {

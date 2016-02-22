@@ -34,13 +34,6 @@
           },
           link: function (scope, element, attrs, ngModel) {
 
-            moment.locale($locale.id);
-
-            scope.$on('$localeChangeSuccess', function () {
-              moment.locale($locale.id);
-            });
-
-
             scope.setViewValue = function setViewValue(value) {
               ngModel.$setViewValue(moment(value));
             };
