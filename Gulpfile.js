@@ -1,14 +1,15 @@
 var gulp = require('gulp'),
-    clean = require('gulp-clean'),
-    connect = require('gulp-connect'),
-    gulpDocs = require('gulp-ngdocs'),
-    uglify = require('gulp-uglify'),
-    minifyCss = require('gulp-minify-css'),
-    ngmin = require('gulp-ngmin'),
-    concat = require('gulp-concat'),
-    ngHtml2Js = require('gulp-ng-html2js'),
-    minifyHtml = require('gulp-minify-html'),
-    removeUseStrict = require('gulp-remove-use-strict');
+  rimraf = require('gulp-rimraf'),
+  connect = require('gulp-connect'),
+  gulpDocs = require('gulp-ngdocs'),
+  sass = require('gulp-sass'),
+  uglify = require('gulp-uglify'),
+  cssnano = require('gulp-cssnano'),
+  ngAnnotate = require('gulp-ng-annotate'),
+  concat = require('gulp-concat'),
+  ngHtml2Js = require('gulp-ng-html2js'),
+  htmlmin = require('gulp-htmlmin'),
+  removeUseStrict = require('gulp-remove-use-strict');
 
 
 var component = require('./bower.json');
@@ -27,16 +28,16 @@ var CONFIG = {
 /* #############
  * ### CLEAN ###
  * ############# */
-gulp.task('clean', function() {
+gulp.task('clean', function () {
   return gulp.src(CONFIG.DIST_PATH, {read: false})
-      .pipe(clean());
+    .pipe(rimraf());
 });
 
 /* ############
  * ### DOCS ###
  * ############ */
 
-gulp.task('build-docs', ['clean'], function() {
+gulp.task('build-docs', ['clean'], function () {
   var tOptions = {
     html5Mode: true,
     highlightCodeFences: true,
@@ -46,9 +47,23 @@ gulp.task('build-docs', ['clean'], function() {
   };
 
   return gulp.src([CONFIG.SCRIPT_PATH + '**/*.js', CONFIG.SCRIPT_PATH + '**/*.ngdoc'])
-      .pipe(gulpDocs.process(tOptions))
-      .pipe(gulp.dest(CONFIG.DOCS_PATH));
+    .pipe(gulpDocs.process(tOptions))
+    .pipe(gulp.dest(CONFIG.DOCS_PATH));
 
+});
+
+/* ############
+ * ### SASS ###
+ * ############ */
+
+gulp.task('compile-sass', function () {
+  return gulp.src(CONFIG.STYLES_PATH + 'sass/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest(CONFIG.STYLES_PATH));
+});
+
+gulp.task('watch-sass', function () {
+  gulp.watch(CONFIG.STYLES_PATH + 'sass/**/*.scss', ['compile-sass']);
 });
 
 /* #############
@@ -58,69 +73,65 @@ gulp.task('build-docs', ['clean'], function() {
 gulp.task('build', ['build-assets', 'build-styles', 'build-scripts',
   'build-templates']);
 
-gulp.task('build-assets', ['clean'], function() {
+gulp.task('build-assets', ['clean'], function () {
   return gulp.src(CONFIG.IMAGES_PATH + '**/*')
-      .pipe(gulp.dest(CONFIG.DIST_PATH + 'images/'));
+    .pipe(gulp.dest(CONFIG.DIST_PATH + 'images/'));
 });
 
-gulp.task('build-scripts', ['clean'], function() {
+gulp.task('build-scripts', ['clean'], function () {
 
   return gulp.src([CONFIG.SCRIPT_PATH + 'app.js',
-    CONFIG.SCRIPT_PATH + '**/*.js'])
-      .pipe(ngmin())
-      .pipe(concat(component.name + '.js'))
-      .pipe(gulp.dest(CONFIG.DIST_PATH))
-      .pipe(uglify())
-      .pipe(removeUseStrict())
-      .pipe(concat(component.name + '.min.js'))
-      .pipe(gulp.dest(CONFIG.DIST_PATH));
+      CONFIG.SCRIPT_PATH + '**/*.js'])
+    .pipe(ngAnnotate())
+    .pipe(concat(component.name + '.js'))
+    .pipe(gulp.dest(CONFIG.DIST_PATH))
+    .pipe(uglify())
+    .pipe(removeUseStrict())
+    .pipe(concat(component.name + '.min.js'))
+    .pipe(gulp.dest(CONFIG.DIST_PATH));
 
 });
 
-gulp.task('build-styles', ['clean'], function() {
+gulp.task('build-styles', ['clean', 'compile-sass'], function () {
 
   return gulp.src(CONFIG.STYLES_PATH + '**/*.css')
-      .pipe(concat('css/styles.css'))
-      .pipe(gulp.dest(CONFIG.DIST_PATH))
-      .pipe(minifyCss())
-      .pipe(concat('css/styles.min.css'))
-      .pipe(gulp.dest(CONFIG.DIST_PATH));
+    .pipe(concat('css/styles.css'))
+    .pipe(gulp.dest(CONFIG.DIST_PATH))
+    .pipe(cssnano())
+    .pipe(concat('css/styles.min.css'))
+    .pipe(gulp.dest(CONFIG.DIST_PATH));
 
 });
 
-gulp.task('build-templates', ['clean'], function() {
+gulp.task('build-templates', ['clean'], function () {
 
   return gulp.src(CONFIG.TEMPLATES_PATH + '**/*.html')
-      .pipe(minifyHtml({
-        empty: true,
-        spare: true,
-        quotes: true
-      }))
-      .pipe(ngHtml2Js({
-        moduleName: 'ds.templates',
-        prefix: CONFIG.TEMPLATES_PATH
-      }))
-      .pipe(concat(component.name + '.templates.js'))
-      .pipe(gulp.dest(CONFIG.DIST_PATH))
-      .pipe(uglify())
-      .pipe(concat(component.name + '.templates.min.js'))
-      .pipe(gulp.dest(CONFIG.DIST_PATH));
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(ngHtml2Js({
+      moduleName: 'ds.templates',
+      prefix: CONFIG.TEMPLATES_PATH
+    }))
+    .pipe(concat(component.name + '.templates.js'))
+    .pipe(gulp.dest(CONFIG.DIST_PATH))
+    .pipe(uglify())
+    .pipe(concat(component.name + '.templates.min.js'))
+    .pipe(gulp.dest(CONFIG.DIST_PATH));
 });
 
 /* ##################
  * ### WEB-SERVER ###
  * ##################
  */
-gulp.task('start', function(cb) {
+gulp.task('start', function (cb) {
   connect.server({
     port: CONFIG.SERVER_PORT || 8080,
     livereload: false
   });
 });
 
-gulp.task('server-reload', function(cb) {
+gulp.task('server-reload', function (cb) {
   gulp.src('./**/*')
-      .pipe(connect.reload());
+    .pipe(connect.reload());
 });
 
 /* ###############

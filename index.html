@@ -15,12 +15,13 @@
     <span>Choose the current date:</span>
     <span ds-datepicker="" ng-model="date" config="dateConfig" ng-disabled="disabled"></span>
 </div>
-<div ds-datepicker="" ng-model="date" config="secondDateConfig"
-     style="width: 500px"></div>
+<div ds-datepicker="" ng-model="date" config="secondDateConfig" style="width: 500px"></div>
 <div ng-bind="date"></div>
 
 <!-- Vendor -->
 <script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/moment/locale/de.js"></script>
 
 <!-- Externals -->
 <script src="bower_components/angular-dateparser/dist/angular-dateparser.js"></script>
@@ -30,22 +31,24 @@
 
 <script src="src/scripts/controllers/dsDatepickerCtrl.js"></script>
 <script src="src/scripts/services/dsDatepickerService.js"></script>
+<script src="src/scripts/services/dsDateFormatService.js"></script>
 <script src="src/scripts/directives/dsDatepicker.js"></script>
 <script src="src/scripts/directives/dsDateFormat.js"></script>
+<script src="src/scripts/filters/dsMomentFilter.js"></script>
 
 
 <script type="text/javascript">
     angular.module('ds.datepicker')
-            .controller('TestCtrl', function($scope, $log) {
+            .controller('TestCtrl', function($scope) {
                 $scope.date = new Date();
 
                 $scope.dateConfig = {
-                    dateFormat: 'dd.MM.yyyy',
-                    pickerFormat: 'MMMM yy'
+                    dateFormat: 'DD.MM.YYYY',
+                    pickerFormat: 'MMMM YY'
                 };
 
                 $scope.secondDateConfig = {
-                    dateFormat: "EEE 'the' dd of MMM yyyy"
+                    dateFormat: "ddd [the] DD of MMM YYYY"
                 };
             });
 </script>
